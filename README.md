@@ -1,36 +1,61 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# LiteLink
 
-## Getting Started
+See what a page actually costs to load. Paste a URL, and LiteLink fetches it
+server-side, strips scripts, trackers, and ad containers, and shows you the
+before/after weight — plus an estimated data cost.
 
-First, run the development server:
+## How it works
+
+1. You submit a URL from the browser.
+2. The `/api/lite` route fetches it server-side (with an SSRF guard against
+   localhost/private IP ranges and a hard byte cap), and reports the raw HTML
+   size.
+3. [`lib/stripPage.ts`](lib/stripPage.ts) parses the HTML with Cheerio and
+   removes `<script>`, `<style>`, `<iframe>`, ad/tracker containers (by class
+   or id heuristics), inline event handlers, image `srcset`/data URIs, and
+   HTML comments.
+4. The page shows both sizes side by side, the percentage saved, and an
+   illustrative data-cost estimate (₦200/MB placeholder — not a real carrier
+   rate).
+
+The comparison measures HTML weight after stripping, not real-world network
+transfer, which also depends on compression and caching the browser already
+does.
+
+## Stack
+
+- [Next.js 16](https://nextjs.org) (App Router, Turbopack)
+- React 19, TypeScript, Tailwind CSS v4
+- [Cheerio](https://cheerio.js.org) for HTML parsing
+- Design tokens adapted from the Vectra Node design system
+  ([`docs/design/vectra-node-design.md`](docs/design/vectra-node-design.md))
+
+## Local development
 
 ```bash
+npm install
 npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+Open [http://localhost:3000](http://localhost:3000).
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+## Testing
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+```bash
+npm test
+```
 
-## Learn More
+Runs the Vitest suite covering `lib/stripPage.ts` and `lib/safeFetch.ts`.
 
-To learn more about Next.js, take a look at the following resources:
+## Other scripts
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+```bash
+npm run lint    # ESLint
+npm run build   # Production build
+npm start       # Serve the production build
+```
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+## Deployment
 
-## Deploy on Vercel
-
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
-
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+Deployed on Vercel. `npm run build` followed by `vercel --prod` (or a push to
+`main` with the Vercel GitHub integration) ships it.

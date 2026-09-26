@@ -1,10 +1,9 @@
 'use client'
 
 import {useState} from 'react'
+import {AmbientBackground} from '@/components/AmbientBackground'
+import {ThemeToggle} from '@/components/ThemeToggle'
 
-// PLACEHOLDER reference rate — not sourced from a real current bundle yet.
-// Label this clearly as illustrative anywhere it is shown. Replace with a
-// cited, current carrier rate before submission.
 const NAIRA_PER_MB = 200
 
 type Result = {
@@ -52,82 +51,135 @@ export default function Page() {
     }
   }
 
+  function reset() {
+    setUrl('')
+    setError(null)
+    setResult(null)
+    window.scrollTo({top: 0, behavior: 'smooth'})
+  }
+
   return (
-    <main className="mx-auto flex min-h-screen max-w-2xl flex-col gap-6 px-4 py-10">
-      <header>
-        <h1 className="text-2xl font-semibold tracking-tight">LiteLink</h1>
-        <p className="mt-1 text-sm text-neutral-600 dark:text-neutral-400">
-          Paste a link. See what it actually costs to load, and get a version
-          without the ads, trackers, and dead weight.
-        </p>
-      </header>
+    <main className="relative flex min-h-screen flex-col">
+      <section className="relative isolate overflow-hidden border-b border-[var(--color-border)] px-4 pb-20 pt-8 sm:pb-28 sm:pt-10">
+        <AmbientBackground />
 
-      <form onSubmit={submit} className="flex gap-2">
-        <input
-          value={url}
-          onChange={(e) => setUrl(e.target.value)}
-          placeholder="https://example.com/some-heavy-page"
-          className="flex-1 rounded-lg border border-neutral-300 bg-white px-3 py-2 text-sm outline-none focus:border-neutral-500 dark:border-neutral-700 dark:bg-neutral-950"
-        />
-        <button
-          type="submit"
-          disabled={loading || !url.trim()}
-          className="rounded-lg bg-neutral-900 px-4 py-2 text-sm font-medium text-white disabled:opacity-40 dark:bg-white dark:text-neutral-900"
-        >
-          {loading ? 'Checking…' : 'Check'}
-        </button>
-      </form>
+        <div className="relative z-10 mx-auto flex max-w-2xl items-center justify-between">
+          <span className="text-sm font-medium tracking-wide text-[var(--color-text-secondary)]">
+            LiteLink
+          </span>
+          <ThemeToggle />
+        </div>
 
-      {error && (
-        <p className="rounded-lg border border-red-300 bg-red-50 p-3 text-sm text-red-800 dark:border-red-900 dark:bg-red-950 dark:text-red-200">
-          {error}
-        </p>
-      )}
-
-      {result && (
-        <section className="flex flex-col gap-4">
-          <div className="grid grid-cols-2 gap-3">
-            <div className="rounded-lg border border-neutral-200 p-4 dark:border-neutral-800">
-              <div className="text-xs uppercase tracking-wide text-neutral-500">Full page</div>
-              <div className="mt-1 text-xl font-semibold">{formatKB(result.fullBytes)}</div>
-              <div className="text-sm text-neutral-500">{formatNaira(result.fullBytes)} est.</div>
-            </div>
-            <div className="rounded-lg border border-emerald-300 bg-emerald-50 p-4 dark:border-emerald-800 dark:bg-emerald-950">
-              <div className="text-xs uppercase tracking-wide text-emerald-700 dark:text-emerald-300">
-                Lite page
-              </div>
-              <div className="mt-1 text-xl font-semibold">{formatKB(result.liteBytes)}</div>
-              <div className="text-sm text-emerald-700 dark:text-emerald-300">
-                {formatNaira(result.liteBytes)} est.
-              </div>
-            </div>
-          </div>
-
-          <p className="text-sm">
-            <strong>{result.savedPercent}% smaller</strong> on a first, uncached
-            load. This measures HTML weight after removing scripts, trackers,
-            and unused images — not real-world network savings, which depend on
-            caching and compression the browser already does.
+        <div className="relative z-10 mx-auto mt-10 flex max-w-2xl flex-col items-center text-center sm:mt-16">
+          <h1 className="text-3xl font-semibold leading-tight tracking-tight text-[var(--color-text-secondary)] sm:text-6xl">
+            See what a page
+            <br />
+            actually costs to load
+          </h1>
+          <p className="mt-5 max-w-lg text-base leading-relaxed text-[var(--color-text-primary)] sm:text-lg">
+            Paste a link. Compare its full weight against a version with the
+            ads, trackers, and dead weight stripped out — plus an estimated
+            data cost.
           </p>
+        </div>
+      </section>
 
-          <p className="text-xs text-neutral-500">
-            Cost estimate uses a placeholder rate of ₦{NAIRA_PER_MB}/MB, for
-            illustration only. Actual data prices vary by carrier and country.
-          </p>
-
-          <details className="rounded-lg border border-neutral-200 p-3 dark:border-neutral-800">
-            <summary className="cursor-pointer text-sm font-medium">
-              View lite version
-            </summary>
-            <iframe
-              title="Lite version"
-              srcDoc={result.liteHtml}
-              sandbox="allow-same-origin"
-              className="mt-3 h-[60vh] w-full rounded border border-neutral-200 dark:border-neutral-800"
+      <section className="relative z-10 mx-auto -mt-12 flex w-full max-w-2xl flex-1 flex-col gap-6 px-4 pb-16 sm:-mt-16">
+        <div className="gradient-shell rounded-[9999px] p-[1px]">
+          <form
+            onSubmit={submit}
+            className="glass-surface flex flex-col gap-2 rounded-[9999px] border border-[var(--color-border)] p-2 shadow-[var(--card-shadow)] sm:flex-row"
+          >
+            <input
+              value={url}
+              onChange={(e) => setUrl(e.target.value)}
+              placeholder="https://example.com/some-heavy-page"
+              className="flex-1 rounded-full bg-transparent px-4 py-2.5 text-sm text-[var(--color-text-secondary)] outline-none placeholder:text-[var(--color-text-primary)]"
             />
-          </details>
-        </section>
-      )}
+            <button
+              type="submit"
+              disabled={loading || !url.trim()}
+              className="rounded-full bg-[var(--color-text-secondary)] px-6 py-2.5 text-sm font-medium text-[var(--color-background)] transition-opacity duration-150 ease-out disabled:opacity-40"
+            >
+              {loading ? 'Checking…' : 'Check'}
+            </button>
+          </form>
+        </div>
+
+        {error && (
+          <p className="rounded-[2px] border border-[var(--color-danger)] bg-[var(--color-danger-surface)] p-3 text-sm text-[var(--color-danger)]">
+            {error}
+          </p>
+        )}
+
+        {result && (
+          <section className="flex flex-col gap-4">
+            <div className="grid grid-cols-1 gap-3 sm:grid-cols-2">
+              <div className="glass-surface rounded-[2px] border border-[var(--color-border)] p-4 shadow-[var(--card-shadow)]">
+                <div className="text-xs font-medium uppercase tracking-wide text-[var(--color-text-primary)]">
+                  Full page
+                </div>
+                <div className="mt-1 text-xl font-semibold text-[var(--color-text-secondary)]">
+                  {formatKB(result.fullBytes)}
+                </div>
+                <div className="text-sm text-[var(--color-text-primary)]">
+                  {formatNaira(result.fullBytes)} est.
+                </div>
+              </div>
+              <div className="rounded-[2px] border border-[var(--color-success)] bg-[var(--color-success-surface)] p-4 shadow-[var(--card-shadow)]">
+                <div className="text-xs font-medium uppercase tracking-wide text-[var(--color-success)]">
+                  Lite page
+                </div>
+                <div className="mt-1 text-xl font-semibold text-[var(--color-text-secondary)]">
+                  {formatKB(result.liteBytes)}
+                </div>
+                <div className="text-sm text-[var(--color-success)]">
+                  {formatNaira(result.liteBytes)} est.
+                </div>
+              </div>
+            </div>
+
+            <p className="text-sm text-[var(--color-text-secondary)]">
+              <strong className="text-[var(--color-primary)]">{result.savedPercent}% smaller</strong> on
+              a first, uncached load. This measures HTML weight after removing
+              scripts, trackers, and unused images — not real-world network
+              savings, which depend on caching and compression the browser
+              already does.
+            </p>
+
+            <p className="text-xs text-[var(--color-text-primary)]">
+              Cost estimate uses a placeholder rate of ₦{NAIRA_PER_MB}/MB, for
+              illustration only. Actual data prices vary by carrier and
+              country.
+            </p>
+
+            <details className="glass-surface rounded-[2px] border border-[var(--color-border)] p-3 shadow-[var(--card-shadow)]">
+              <summary className="cursor-pointer text-sm font-medium text-[var(--color-text-secondary)]">
+                View lite version
+              </summary>
+              <iframe
+                title="Lite version"
+                srcDoc={result.liteHtml}
+                sandbox="allow-same-origin"
+                className="mt-3 h-[60vh] w-full rounded-[2px] border border-[var(--color-border)]"
+              />
+            </details>
+
+            <button
+              type="button"
+              onClick={reset}
+              className="self-start rounded-full border border-[var(--color-border)] px-4 py-2 text-sm font-medium text-[var(--color-text-secondary)] transition-colors duration-150 ease-out hover:border-[var(--color-primary)] hover:text-[var(--color-primary)]"
+            >
+              New check
+            </button>
+          </section>
+        )}
+      </section>
+
+      <footer className="mx-auto w-full max-w-2xl px-4 pb-10 text-center text-xs text-[var(--color-text-primary)]">
+        LiteLink fetches pages server-side to compare weight. It does not
+        store the pages you check.
+      </footer>
     </main>
   )
 }
