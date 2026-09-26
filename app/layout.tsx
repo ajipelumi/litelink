@@ -8,7 +8,7 @@ const inter = Inter({
   subsets: ['latin'],
 })
 
-const siteUrl = 'https://litelink.vercel.app'
+const siteUrl = 'https://litelink-seven.vercel.app'
 
 export const metadata: Metadata = {
   metadataBase: new URL(siteUrl),

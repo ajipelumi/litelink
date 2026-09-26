@@ -6,6 +6,6 @@ export default function robots(): MetadataRoute.Robots {
       userAgent: '*',
       allow: '/',
     },
-    sitemap: 'https://litelink.vercel.app/sitemap.xml',
+    sitemap: 'https://litelink-seven.vercel.app/sitemap.xml',
   }
 }
