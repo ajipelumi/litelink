@@ -92,6 +92,10 @@ export default function Page() {
             with the ads, trackers, and dead weight gone, plus what each
             one costs in data.
           </p>
+          <p className="mt-3 max-w-lg text-sm text-[var(--color-text-primary)]">
+            Built for anyone on a mobile data plan, where a bloated page
+            isn&apos;t just slow, it&apos;s money.
+          </p>
         </div>
       </section>
 
