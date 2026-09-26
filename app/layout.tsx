@@ -12,7 +12,7 @@ const siteUrl = 'https://litelink-seven.vercel.app'
 
 export const metadata: Metadata = {
   metadataBase: new URL(siteUrl),
-  title: 'LiteLink: see what a page actually costs to load',
+  title: 'LiteLink',
   description:
     'Compare a page in full against a stripped, ad- and tracker-free version, with an estimated data cost for each.',
   keywords: ['page weight', 'web performance', 'data cost', 'lite browsing', 'low bandwidth'],
