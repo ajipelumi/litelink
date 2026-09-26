@@ -1,4 +1,4 @@
-import {assertSafeUrl, fetchCapped, UnsafeUrlError} from '@/lib/safeFetch'
+import {assertSafeUrl, fetchCapped, FetchBlockedError, UnsafeUrlError} from '@/lib/safeFetch'
 import {byteLength, stripPage} from '@/lib/stripPage'
 
 export const maxDuration = 30
@@ -30,6 +30,9 @@ export async function POST(req: Request) {
   try {
     ;({bytes, contentType} = await fetchCapped(target))
   } catch (err) {
+    if (err instanceof FetchBlockedError) {
+      return Response.json({error: err.message}, {status: 502})
+    }
     return Response.json(
       {error: err instanceof Error ? err.message : 'Could not fetch that URL.'},
       {status: 502},

@@ -42,16 +42,29 @@ const MAX_BYTES = 15 * 1024 * 1024
  * Fetches a URL server-side with a hard byte cap, since the caller controls
  * the target and a multi-gigabyte response should not be read into memory.
  */
+export class FetchBlockedError extends Error {}
+
 export async function fetchCapped(url: URL): Promise<{bytes: Uint8Array; contentType: string | null}> {
-  const res = await fetch(url, {
-    redirect: 'follow',
-    headers: {
-      // A generic desktop UA. Some sites serve a much lighter page to
-      // unrecognised or bot-like clients, which would understate "full" size.
-      'user-agent':
-        'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0 Safari/537.36',
-    },
-  })
+  let res: Response
+  try {
+    res = await fetch(url, {
+      redirect: 'follow',
+      headers: {
+        // A generic desktop UA. Some sites serve a much lighter page to
+        // unrecognised or bot-like clients, which would understate "full" size.
+        'user-agent':
+          'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0 Safari/537.36',
+      },
+    })
+  } catch {
+    // Some sites (news sites and anything behind Cloudflare-style bot
+    // protection are common) refuse a bare server-side fetch outright, with
+    // no HTTP response at all. That is a real limitation of this approach,
+    // worth naming plainly rather than surfacing as a generic failure.
+    throw new FetchBlockedError(
+      'This site would not respond to a direct fetch. Some sites block requests that do not come from a real browser.',
+    )
+  }
 
   if (!res.ok) {
     throw new Error(`Upstream responded ${res.status}`)

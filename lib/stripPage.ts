@@ -57,6 +57,7 @@ export function stripPage(html: string): string {
   // stripped <script>/<style>, and onX handlers are also an XSS surface if
   // this HTML is ever rendered somewhere less carefully sandboxed.
   $('*').each((_, el) => {
+    if (el.type !== 'tag') return
     for (const attr of Object.keys(el.attribs)) {
       if (attr.startsWith('on')) $(el).removeAttr(attr)
     }
