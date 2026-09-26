@@ -5,6 +5,7 @@ import {AmbientBackground} from '@/components/AmbientBackground'
 import {ThemeToggle} from '@/components/ThemeToggle'
 
 const NAIRA_PER_MB = 200
+const EXAMPLE_URL = 'https://www.premiumtimesng.com'
 
 type Result = {
   url: string
@@ -29,9 +30,8 @@ export default function Page() {
   const [error, setError] = useState<string | null>(null)
   const [result, setResult] = useState<Result | null>(null)
 
-  async function submit(e: React.FormEvent) {
-    e.preventDefault()
-    if (!url.trim() || loading) return
+  async function check(target: string) {
+    if (!target.trim() || loading) return
     setLoading(true)
     setError(null)
     setResult(null)
@@ -39,7 +39,7 @@ export default function Page() {
       const res = await fetch('/api/lite', {
         method: 'POST',
         headers: {'Content-Type': 'application/json'},
-        body: JSON.stringify({url: url.trim()}),
+        body: JSON.stringify({url: target.trim()}),
       })
       const data = await res.json()
       if (!res.ok) throw new Error(data.error ?? 'Something went wrong.')
@@ -49,6 +49,16 @@ export default function Page() {
     } finally {
       setLoading(false)
     }
+  }
+
+  function submit(e: React.FormEvent) {
+    e.preventDefault()
+    check(url)
+  }
+
+  function tryExample() {
+    setUrl(EXAMPLE_URL)
+    check(EXAMPLE_URL)
   }
 
   function reset() {
@@ -77,9 +87,9 @@ export default function Page() {
             actually costs to load
           </h1>
           <p className="mt-5 max-w-lg text-base leading-relaxed text-[var(--color-text-primary)] sm:text-lg">
-            Paste a link. Compare its full weight against a version with the
-            ads, trackers, and dead weight stripped out — plus an estimated
-            data cost.
+            Paste a link to see its full weight, then a stripped version
+            with the ads, trackers, and dead weight gone, plus what each
+            one costs in data.
           </p>
         </div>
       </section>
@@ -93,7 +103,7 @@ export default function Page() {
             <input
               value={url}
               onChange={(e) => setUrl(e.target.value)}
-              placeholder="https://example.com/some-heavy-page"
+              placeholder="Paste a URL, e.g. https://www.premiumtimesng.com"
               className="flex-1 rounded-full bg-transparent px-4 py-2.5 text-sm text-[var(--color-text-secondary)] outline-none placeholder:text-[var(--color-text-primary)]"
             />
             <button
@@ -105,6 +115,15 @@ export default function Page() {
             </button>
           </form>
         </div>
+
+        <button
+          type="button"
+          onClick={tryExample}
+          disabled={loading}
+          className="self-center text-xs font-medium text-[var(--color-text-primary)] underline decoration-dotted underline-offset-4 transition-colors duration-150 ease-out hover:text-[var(--color-primary)] disabled:opacity-40"
+        >
+          No link handy? Try an example: Premium Times Nigeria
+        </button>
 
         {error && (
           <p className="rounded-[2px] border border-[var(--color-danger)] bg-[var(--color-danger-surface)] p-3 text-sm text-[var(--color-danger)]">
@@ -142,9 +161,9 @@ export default function Page() {
             <p className="text-sm text-[var(--color-text-secondary)]">
               <strong className="text-[var(--color-primary)]">{result.savedPercent}% smaller</strong> on
               a first, uncached load. This measures HTML weight after removing
-              scripts, trackers, and unused images — not real-world network
-              savings, which depend on caching and compression the browser
-              already does.
+              scripts, trackers, and unused images. It isn&apos;t the same as
+              real-world network savings, which also depend on caching and
+              compression the browser already handles.
             </p>
 
             <p className="text-xs text-[var(--color-text-primary)]">

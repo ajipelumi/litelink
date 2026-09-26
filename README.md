@@ -2,7 +2,7 @@
 
 See what a page actually costs to load. Paste a URL, and LiteLink fetches it
 server-side, strips scripts, trackers, and ad containers, and shows you the
-before/after weight — plus an estimated data cost.
+before/after weight, plus an estimated data cost.
 
 ## How it works
 
@@ -15,7 +15,7 @@ before/after weight — plus an estimated data cost.
    or id heuristics), inline event handlers, image `srcset`/data URIs, and
    HTML comments.
 4. The page shows both sizes side by side, the percentage saved, and an
-   illustrative data-cost estimate (₦200/MB placeholder — not a real carrier
+   illustrative data-cost estimate (₦200/MB placeholder, not a real carrier
    rate).
 
 The comparison measures HTML weight after stripping, not real-world network

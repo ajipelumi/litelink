@@ -12,23 +12,23 @@ const siteUrl = 'https://litelink-seven.vercel.app'
 
 export const metadata: Metadata = {
   metadataBase: new URL(siteUrl),
-  title: 'LiteLink — see what a page actually costs to load',
+  title: 'LiteLink: see what a page actually costs to load',
   description:
-    'Paste a URL and compare full page weight against a stripped, ad- and tracker-free version, with an estimated data cost.',
+    'Compare a page in full against a stripped, ad- and tracker-free version, with an estimated data cost for each.',
   keywords: ['page weight', 'web performance', 'data cost', 'lite browsing', 'low bandwidth'],
   openGraph: {
-    title: 'LiteLink — see what a page actually costs to load',
+    title: 'LiteLink: see what a page actually costs to load',
     description:
-      'Paste a URL and compare full page weight against a stripped, ad- and tracker-free version, with an estimated data cost.',
+      'Compare a page in full against a stripped, ad- and tracker-free version, with an estimated data cost for each.',
     url: siteUrl,
     siteName: 'LiteLink',
     type: 'website',
   },
   twitter: {
     card: 'summary_large_image',
-    title: 'LiteLink — see what a page actually costs to load',
+    title: 'LiteLink: see what a page actually costs to load',
     description:
-      'Paste a URL and compare full page weight against a stripped, ad- and tracker-free version, with an estimated data cost.',
+      'Compare a page in full against a stripped, ad- and tracker-free version, with an estimated data cost for each.',
   },
   robots: {
     index: true,
