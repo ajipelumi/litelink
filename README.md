@@ -15,8 +15,11 @@ before/after weight, plus an estimated data cost.
    or id heuristics), inline event handlers, image `srcset`/data URIs, and
    HTML comments.
 4. The page shows both sizes side by side, the percentage saved, and an
-   illustrative data-cost estimate (₦200/MB placeholder, not a real carrier
-   rate).
+   estimated data cost, based on [MTN Nigeria's 10GB monthly
+   plan](https://www.mtn.ng/data-plans-overview/) (₦4,500, about ₦0.44/MB,
+   as of September 2026). Actual rates vary by carrier, country, and plan
+   size, and MTN's own pricing may have changed since; check the linked page
+   for the current figure.
 
 The comparison measures HTML weight after stripping, not real-world network
 transfer, which also depends on compression and caching the browser already

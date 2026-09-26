@@ -4,7 +4,8 @@ import {useState} from 'react'
 import {AmbientBackground} from '@/components/AmbientBackground'
 import {ThemeToggle} from '@/components/ThemeToggle'
 
-const NAIRA_PER_MB = 200
+const NAIRA_PER_MB = 4500 / (10 * 1024)
+const RATE_SOURCE_DATE = 'September 2026'
 const EXAMPLE_URL = 'https://www.premiumtimesng.com'
 
 type Result = {
@@ -167,9 +168,17 @@ export default function Page() {
             </p>
 
             <p className="text-xs text-[var(--color-text-primary)]">
-              Cost estimate uses a placeholder rate of ₦{NAIRA_PER_MB}/MB, for
-              illustration only. Actual data prices vary by carrier and
-              country.
+              Cost estimate is based on{' '}
+              <a
+                href="https://www.mtn.ng/data-plans-overview/"
+                target="_blank"
+                rel="noreferrer"
+                className="underline decoration-dotted underline-offset-4 hover:text-[var(--color-primary)]"
+              >
+                MTN Nigeria&apos;s 10GB monthly plan
+              </a>{' '}
+              (₦4,500, or ₦{NAIRA_PER_MB.toFixed(2)}/MB) as of {RATE_SOURCE_DATE}.
+              Actual rates vary by carrier, country, and plan size.
             </p>
 
             <details className="glass-surface rounded-[2px] border border-[var(--color-border)] p-3 shadow-[var(--card-shadow)]">
