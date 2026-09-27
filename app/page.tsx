@@ -71,8 +71,9 @@ export default function Page() {
 
   return (
     <main className="relative flex min-h-screen flex-col">
-      <section className="relative isolate overflow-hidden border-b border-[var(--color-border)] px-4 pb-20 pt-8 sm:pb-28 sm:pt-10">
+      <section className="relative isolate overflow-hidden px-4 pb-14 pt-6 sm:pb-28 sm:pt-10">
         <AmbientBackground />
+        <div className="pointer-events-none absolute inset-x-0 bottom-0 h-24 bg-gradient-to-b from-transparent to-[var(--color-background)] sm:h-32" />
 
         <div className="relative z-10 mx-auto flex max-w-2xl items-center justify-between">
           <span className="text-sm font-medium tracking-wide text-[var(--color-text-secondary)]">
@@ -81,40 +82,40 @@ export default function Page() {
           <ThemeToggle />
         </div>
 
-        <div className="relative z-10 mx-auto mt-10 flex max-w-2xl flex-col items-center text-center sm:mt-16">
+        <div className="relative z-10 mx-auto mt-6 flex max-w-2xl flex-col items-center text-center sm:mt-16">
           <h1 className="text-3xl font-semibold leading-tight tracking-tight text-[var(--color-text-secondary)] sm:text-6xl">
             See what a page
             <br />
             actually costs to load
           </h1>
-          <p className="mt-5 max-w-lg text-base leading-relaxed text-[var(--color-text-primary)] sm:text-lg">
+          <p className="mt-4 max-w-lg text-sm leading-relaxed text-[var(--color-text-primary)] sm:mt-5 sm:text-lg">
             Paste a link to see its full weight, then a stripped version
             with the ads, trackers, and dead weight gone, plus what each
             one costs in data.
           </p>
-          <p className="mt-3 max-w-lg text-sm text-[var(--color-text-primary)]">
+          <p className="mt-2 max-w-lg text-xs text-[var(--color-text-primary)] sm:mt-3 sm:text-sm">
             Built for anyone on a mobile data plan, where a bloated page
             isn&apos;t just slow, it&apos;s money.
           </p>
         </div>
       </section>
 
-      <section className="relative z-10 mx-auto -mt-12 flex w-full max-w-2xl flex-1 flex-col gap-6 px-4 pb-16 sm:-mt-16">
-        <div className="gradient-shell rounded-[9999px] p-[1px]">
+      <section className="relative z-10 mx-auto -mt-8 flex w-full max-w-2xl flex-1 flex-col gap-6 px-4 pb-16 sm:-mt-16">
+        <div className="gradient-shell rounded-2xl p-[1px] sm:rounded-full">
           <form
             onSubmit={submit}
-            className="glass-surface flex flex-col gap-2 rounded-[9999px] border border-[var(--color-border)] p-2 shadow-[var(--card-shadow)] sm:flex-row"
+            className="glass-surface flex flex-col gap-2 rounded-2xl border border-[var(--color-border)] p-2 shadow-[var(--card-shadow)] sm:flex-row sm:rounded-full"
           >
             <input
               value={url}
               onChange={(e) => setUrl(e.target.value)}
-              placeholder="Paste a URL, e.g. https://www.premiumtimesng.com"
-              className="flex-1 rounded-full bg-transparent px-4 py-2.5 text-sm text-[var(--color-text-secondary)] outline-none placeholder:text-[var(--color-text-primary)]"
+              placeholder="Paste a URL to check"
+              className="min-w-0 flex-1 truncate rounded-xl bg-transparent px-4 py-2.5 text-sm text-[var(--color-text-secondary)] outline-none placeholder:text-[var(--color-text-primary)] sm:rounded-full"
             />
             <button
               type="submit"
               disabled={loading || !url.trim()}
-              className="rounded-full bg-[var(--color-text-secondary)] px-6 py-2.5 text-sm font-medium text-[var(--color-background)] transition-opacity duration-150 ease-out disabled:opacity-40"
+              className="rounded-xl bg-[var(--color-text-secondary)] px-6 py-2.5 text-sm font-medium text-[var(--color-background)] transition-opacity duration-150 ease-out disabled:opacity-40 sm:rounded-full"
             >
               {loading ? 'Checking…' : 'Check'}
             </button>
